@@ -27,7 +27,7 @@
 []
 @PointClass base(Targetname, Origin) studio("") = wb_spawn_oec : "WB Spawnpoint for orangee co"
 []
-@PointClass base(Targetname, Origin) studio("") = wb_spawn_bbe : "WB Spawnpoint for belmont enterprises"
+@PointClass base(Targetname, Origin) studio("") = wb_spawn_svr : "WB Spawnpoint for Slaver Enterprises"
 []
 @PointClass base(Targetname, Origin) studio("") = wb_spawn_abi : "WB Spawnpoint for abrika industries"
 []
@@ -39,7 +39,7 @@
 	[
 		1 : "holmrekR tek"
 		2 : "Orangee Co"
-		3 : "Belmont Enterprises"
+		3 : "Slaver Enterprises"
 		4 : "Abrika Industries"
 	]
 ]
@@ -50,7 +50,7 @@
 	[
 		1 : "holmrekR tek"
 		2 : "Orangee Co"
-		3 : "Belmont Enterprises"
+		3 : "Slaver Enterprises"
 		4 : "Abrika Industries"
 	]
 ]

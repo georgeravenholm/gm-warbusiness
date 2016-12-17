@@ -10,7 +10,7 @@ include('sconvars.lua')
 --function GM:CreateTeams()
   team.SetUp(1,"HRT",Color(60,60,255),true) --holmrekR tek (me, american soldiers)
   team.SetUp(2,"OEC",Color(255,100,0), true )-- Orangee Co (jake, hawaiians)
-  team.SetUp(3,"BBE",Color(160,20,20), fourway ) --Bill Belmont Enterprises (german soldiers)
+  team.SetUp(3,"SVR",Color(160,20,20), fourway ) --Slaver Enterprises (slaves or somethinbg)
   team.SetUp(4,"ABI",Color(0,255,0), fourway ) -- Abrika industries (melons)
   team.SetUp(5,"spectatorfags",Color(50,50,50), false )
 
@@ -48,7 +48,7 @@ teamdata[2]=
 }
 teamdata[3]=
 {
-  name="Belmont Enterprises",
+  name="Slaver Enterprises",
   model="models/player/dod_german.mdl",
   image="images/wb_teamicons/belmont.png",
 	tooltip="\"we use the best slaves for you\"\nwe work in selling the best mangos, cotton, suger, coco beans and coffee beans\nwe help prisoners learn life lessons such as how to make slaver enterprises seal of approval mangos\nmost of our workers are from prisons and 3rd world countries\nwe also steal grapes because its cheaper to send 5 children soldier to steal grapes then buying them\nyours trueley, rick fenado"
