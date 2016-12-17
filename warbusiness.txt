@@ -1,0 +1,8 @@
+"warbusiness"
+{
+	"base"		"base"
+	"title"		"War Business"
+	"menusystem"	"1"
+	"maps"		"^wb_"
+	"workshopid"	""	
+}
