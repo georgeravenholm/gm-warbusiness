@@ -1,0 +1,56 @@
+@include "base.fgd"
+@include "halflife2.fgd"
+@include "garrysmod.fgd"
+// War Business FGD
+
+@PointClass base(Targetname, Origin) studio("") = wb_info : "War Business Round information"
+[
+	gamemode(choices) : "Gamemode" : 0 : "Gamemode for map" =
+	[
+		0 : "2deathmatch"
+		1 : "4deathmatch"
+		2 : "2ctf"
+		3 : "4ctf"
+		4 : "capturepoints (NYI)"
+	]
+
+	roundtime(integer) : "Round Length (s)" : 120 : "How long a round lasts in seconds"
+	setuptime(integer) : "Setup Time (s)" : 3 : "How players are frozen before round"
+	
+	musicurl(string) : "Music URL" : "www.example.com" : "URL for direct link to mp3 or something"
+	musiccredit(string) : "Music Credit" : "Nobody" : "Print creator of music so you dont get sued"
+	
+]
+
+// Team spawn points
+@PointClass base(Targetname, Origin) studio("") = wb_spawn_hrt : "WB Spawnpoint for holmrekR tek"
+[]
+@PointClass base(Targetname, Origin) studio("") = wb_spawn_oec : "WB Spawnpoint for orangee co"
+[]
+@PointClass base(Targetname, Origin) studio("") = wb_spawn_bbe : "WB Spawnpoint for belmont enterprises"
+[]
+@PointClass base(Targetname, Origin) studio("") = wb_spawn_abi : "WB Spawnpoint for abrika industries"
+[]
+
+// Flag 
+@PointClass base(Targetname, Origin) studio("") = wb_flag : "WB Flag entity for ctf"
+[
+	team(choices) : "Team" : 1 : "Team who owns this flag" =
+	[
+		1 : "holmrekR tek"
+		2 : "Orangee Co"
+		3 : "Belmont Enterprises"
+		4 : "Abrika Industries"
+	]
+]
+// and flagcap trigger
+@SolidClass = wb_trig_flagcap : "Brush, where the player must return the stolen flag"
+[
+	team(choices) : "Team who can capture flag here" : 1 : "Team who can cap" =
+	[
+		1 : "holmrekR tek"
+		2 : "Orangee Co"
+		3 : "Belmont Enterprises"
+		4 : "Abrika Industries"
+	]
+]
