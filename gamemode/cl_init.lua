@@ -26,7 +26,7 @@ function GM:OnPlayerChat(ply,text,teamChat) // le memery on asking to change cla
 	elseif ply==LocalPlayer()&&string.match(string.lower(text),"how")!=nil && string.match(string.lower(text),"change")!=nil && (string.match(string.lower(text),"team")!=nil || string.match(string.lower(text),"company")!=nil || string.match(string.lower(text),"group")!=nil ) then -- they asked how to change class
 		Derma_Message("PRESS F1 OR TYPE CHOOSETEAM IN CONSOLE, YA IDIOT. CANT YOU READ WINDOWS? IF YOU ARE ON A LAPTOP TRY THE FUNCTION OR 'FN' BUTTON, OTHERWISE IF YOU DO NOT KNOW HOW TO OPEN CONSOLE THEN FRICKING GOOGLE IT MATE OK THANKS","T R O G G E R E D",
 		"jesus fucking christ mate calm down im just a little kid who cant press the fn button, but can you please open the team menu for me i just wanted to enjoy your gamemode. huh? youll do it? thanks so much i really appreciate that and im really happy you were so nice")
-		RunConsoleCommand("chooseclass")
+		RunConsoleCommand("chooseteam")
 	end
 end
 
