@@ -128,6 +128,7 @@ end
 
 local metaplayer = FindMetaTable("Player")
 function metaplayer:AutoBalance()
+	if GetConVar("wb_debug"):GetInt() == 1 then return false end
 	if !fourway then
 		if ( team.NumPlayers(1)>team.NumPlayers(2)+1 ) && self:Team()==1 then self:SetTeam(2) announceBalance(self) return true-- Team 1 has > than 1 player advantage.
 		elseif ( team.NumPlayers(2)>team.NumPlayers(1)+1 ) && self:Team()==2 then self:SetTeam(1) announceBalance(self) return true end -- Team 2 has > than 1 player advantage.
@@ -465,8 +466,7 @@ function GM:PlayerShouldTakeDamage( ply, attacker )
 end
 
 
-
-
+// round sytem
 function endRound()
   game = false
   setup = true
@@ -593,6 +593,10 @@ end
 util.AddNetworkString("requestteam")
 net.Receive( "requestteam", function( len, ply )
   local request = net.ReadInt(4)
+
+  // debug
+  if GetConVar("wb_debug"):GetInt() == 1 then ply:SetTeam(request) ply:Kill() return true end
+
   if request == ply:Team() || humiliate then return end
 
   if request == 5 then -- spectate
