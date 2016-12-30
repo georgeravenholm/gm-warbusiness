@@ -41,6 +41,19 @@ end
 
 -- functions
 local metatable = ENT
+
+function ENT:Notify( s2 , c2 , adj , s1 , c1 ) // killfeed notifies
+     net.Start("killfeed")
+          net.WriteString(s1)
+          net.WriteColor(c1)
+
+          net.WriteString(adj)
+
+          net.WriteString(s2)
+          net.WriteColor(c2)
+     net.Broadcast()
+end
+
 function metatable:returnToBase() -- return the flag back to its base
 	self:SetParent(nil)
 	self:SetPos(self.origin)
@@ -53,10 +66,12 @@ function metatable:returnToBase() -- return the flag back to its base
 
 
 	PrintMessage( HUD_PRINTCENTER, teamdata[self.team].name.."'s flag has returned." )
+     self:Notify(teamdata[self.team].name.."'s flag" , team.GetColor(self.team) , "returned to" ,teamdata[self.team].name , team.GetColor(self.team) )
 end
 
 function metatable:dropFlag()
 	PrintMessage( HUD_PRINTCENTER, teamdata[self.team].name.."'s flag was dropped!" )
+     self:Notify( self.carrier:Nick() , team.GetColor(self.carrier:Team()) , "dropped" , teamdata[self.team].name.."'s flag!" , team.GetColor(self.team) )
 
 	self:SetParent(nil)
 	self.cantake = false -- until 3 seconds
@@ -92,6 +107,7 @@ function metatable:pickupFlag(ply)
 	self.cantake = false
 	self.stolen = true
 	PrintMessage( HUD_PRINTCENTER, self.carrier:Name().." ("..team.GetName(self.carrier:Team())..") has taken "..teamdata[self.team].name.."'s flag!" )
+     self:Notify( self.carrier:Nick() , team.GetColor(self.carrier:Team()) , "picked up" , teamdata[self.team].name.."'s flag!" , team.GetColor(self.team) )
 	net.Start("elimination") net.WriteString("Take the flag back to your base!") net.Send(self.carrier)
 	timer.Stop("resetflag")
 end
@@ -134,6 +150,7 @@ function ENT:Think()
 
 					-- award points
 					PrintMessage( HUD_PRINTCENTER, teamdata[self.team].name.."'s flag was captured by "..teamdata[self.carrier:Team()].name.."!!!" )
+                         self:Notify( self.carrier:Nick() , team.GetColor(self.carrier:Team()) , "CAPTURED" , teamdata[self.team].name.."'s flag!" , team.GetColor(self.team) )
 					team.AddScore(self.carrier:Team(),1)
 					self.carrier:SetNWInt("points",ent:GetNWInt("points")+10)
 					net.Start("elimination") net.WriteString("Captured Flag +10") net.Send(self.carrier)

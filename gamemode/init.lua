@@ -337,7 +337,7 @@ function GM:PlayerDeath(ply,inflictor,attacker)
 		else // suicide or world kill
 			net.WriteString("Themself") // Dead's name
 			net.WriteColor(team.GetColor(ply:Team())) // Dead's team colour
-			net.WriteString("killed") // sey person killed
+			if !attacker:IsPlayer() || inflictor != "player" then net.WriteString("killed") else net.WriteString(inflictor:GetClass()) end // if world, killed them self if grendadethey grenaded themself
 			net.WriteString(ply:Nick()) // killer's name
 			net.WriteColor(team.GetColor(ply:Team())) // killer's team colour
 		end

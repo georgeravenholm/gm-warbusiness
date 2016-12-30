@@ -40,7 +40,7 @@ net.Receive("killfeed", function()
 	// Get string and colour data ito vars
 	local dead = net.ReadString()
 	local deadCol = net.ReadColor()
-	local adj = net.ReadString()
+	local weapon = net.ReadString() // weapon class
 	local killer = net.ReadString()
 	local killerCol = net.ReadColor()
 
@@ -52,11 +52,12 @@ net.Receive("killfeed", function()
 	// Now put that info into the panel
 	p.Paint = function(self,w,h)
 		local col = Color(150,150,150,255)
-		if attacker==LocalPlayer() || killed == LocalPlayer() then col = Color(255,255,255,255) end
+		if killer==LocalPlayer():Nick() || killer == LocalPlayer():Nick() then col = Color(255,255,255,255) end
 		draw.RoundedBox(8,0,0,w,h,col)
-		draw.SimpleText(attacker:Nick(),"ChatFont",10,h/2,team.GetColor(attacker:Team()),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+		draw.SimpleText(killer,"ChatFont",10,h/2,killerCol,TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER) // killer
+		// adj'd
 		if weponverbs[weapon] == nil then draw.SimpleText(weapon,"ChatFont",w/2,h/2,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) else draw.SimpleText(weponverbs[weapon],"ChatFont",w/2,h/2,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) end
-		draw.SimpleText(killed:Nick(),"ChatFont",w-10,h/2,team.GetColor(killed:Team()),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
+		draw.SimpleText(dead,"ChatFont",w-10,h/2,deadCol,TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER) // dead
 	end
 
 

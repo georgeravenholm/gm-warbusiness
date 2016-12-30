@@ -38,6 +38,7 @@ weponverbs = // These should be shared constants!
      ["weapon_smg1"]="gunned down",
      ["weapon_ar2"]="shot down",
      ["weapon_frag"]="exploded",
+     ["npc_grenade_frag"]="exploded",
      ["weapon_agent_backstab"]="backstabbed",
      ["weapon_crossbow"]="sniped",
      ["weapon_sharp_rifle"]="sniped",
