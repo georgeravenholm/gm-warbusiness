@@ -417,8 +417,9 @@ function GM:PlayerDeath(ply,inflictor,attacker)
 
       timer.Simple( 3, function()
 			if ply:Alive() || humiliate then return end -- why respawn if we are alive? also, no respawning during humiliation
-      ply:UnSpectate()
-      ply:Spawn()
+		      ply:SpectateEntity( table.Random( team.GetPlayers(ply:Team()) ) )
+			 ply:SetObserverMode(OBS_MODE_ROAMING)
+		      timer.Simple( GetGlobalInt("respawntime",5), function() if ply:Alive() || humiliate then return end ply:Spawn() end )
       end )
     elseif ply:IsValid() && !humiliate then
       ply:Spectate( OBS_MODE_DEATHCAM )
@@ -427,8 +428,9 @@ function GM:PlayerDeath(ply,inflictor,attacker)
 
       timer.Simple( 3, function()
 			if ply:Alive() || humiliate then return end -- why respawn if we are alive? also, no respawning during humiliation
-			ply:UnSpectate()
-      ply:Spawn()
+			ply:SpectateEntity( table.Random( team.GetPlayers(ply:Team()) ) )
+			ply:SetObserverMode(OBS_MODE_ROAMING)
+			timer.Simple( GetGlobalInt("respawntime",5), function() if ply:Alive() || humiliate then return end ply:Spawn() end )
       end )
     end
 end
