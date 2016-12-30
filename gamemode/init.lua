@@ -111,19 +111,19 @@ end]]
 
 
 function GM:PlayerSelectSpawn(ply)
-    if ply:Team()==5 then return end
-    local ent = table.Random( team.GetSpawnPoints( ply:Team() ) )
-    if ent!=nil && ent!=NULL then
-      ply:SetEyeAngles(ent:GetAngles())
-      return ent
-    else
-      return table.Random( ents.FindByClass("info_player_start") )
-    end
+	if ply:Team()==5 then return end
+     local ent = table.Random( team.GetSpawnPoints( ply:Team() ) )
+     if ent!=nil && ent!=NULL then
+     	ply:SetEyeAngles(ent:GetAngles())
+          return ent
+     else
+          return table.Random( ents.FindByClass("info_player_start") )
+     end
 end
 
 function announceBalance(ply)
-  PrintMessage( HUD_PRINTCENTER, ply:Name().." was autobalanced to "..teamdata[ply:Team()].name )
-  ply:ChatPrint("You have been autobalanced to "..teamdata[ply:Team()].name)
+	PrintMessage( HUD_PRINTCENTER, ply:Name().." was autobalanced to "..teamdata[ply:Team()].name )
+	ply:ChatPrint("You have been autobalanced to "..teamdata[ply:Team()].name)
 end
 
 local metaplayer = FindMetaTable("Player")
@@ -176,7 +176,6 @@ function GM:PlayerInitialSpawn(ply)
 		ply:SetTeam( 1 )
 		if ply:AutoBalance() then ply:KillSilent() end
 	end
-
 end
 
 function metaplayer:CanJoin(join)
@@ -232,51 +231,49 @@ function GM:PlayerSpawn(ply) ---------------------------------------------------
 	ply:StripAmmo()
 	ply:SetNWEntity("carrying",Entity(0))
 	if (ply:Team() == 3 || ply:Team() == 4) && !fourway then ply:SetTeam(5) end -- if not fourway and they are on SVR or ABT put them in spectatorfags
-		if ply:Team()!=5 then
+	if ply:Team()!=5 then // A L L O F  THIS IF NOT SPECTATING
 		if ply:AutoBalance() then ply:KillSilent() end
 		ply:UnSpectate()
 
-
-
 		-- Reset >0> KillStreak >0>
 		ply:SetNWInt("killstreak",0)
-
 		-- If they are a bot, randomise their class
 		if ply:IsBot() then
 			ply:SetNWInt("class",math.random(7))
 			--print(table.Random(ply:GetWeapons()))
 		end
 
-    ply:SetPlayerColor(team.GetColor(ply:Team()):ToVector())
-    ply:SetModel( teamdata[ply:Team()].model )
-    ply:SetNoCollideWithTeammates( true )
-		ply:AllowFlashlight(true)
+	     ply:SetPlayerColor(team.GetColor(ply:Team()):ToVector())
+	     ply:SetModel( teamdata[ply:Team()].model )
+	     ply:SetNoCollideWithTeammates( true )
+			ply:AllowFlashlight(true)
 
-		ply:SetJumpPower( 250 )
+			ply:SetJumpPower( 250 )
 
 
+		// All these comments were the old weapon spawning, when classes were not yet implemented
 		/*ply:SetMaxHealth(150)
-    ply:SetHealth(ply:GetMaxHealth())
-    ply:SetRunSpeed(300)
-    ply:SetWalkSpeed( ply:GetRunSpeed() )
+	     ply:SetHealth(ply:GetMaxHealth())
+	     ply:SetRunSpeed(300)
+	     ply:SetWalkSpeed( ply:GetRunSpeed() )
 
-    ply:Give("weapon_smg1")
-    ply:Give("weapon_crowbar")
-    ply:Give("weapon_pistol")
-    ply:Give("weapon_frag")
-    ply:Give("weapon_357")
+	     ply:Give("weapon_smg1")
+	     ply:Give("weapon_crowbar")
+	     ply:Give("weapon_pistol")
+	     ply:Give("weapon_frag")
+	     ply:Give("weapon_357")
 
-    ply:SetAmmo( 100, "Pistol", true )
-    ply:SetAmmo( 12, "357", true )
-    ply:SetAmmo( 200, "SMG1", true )
-    ply:SetAmmo( 3,"Grenade")*/
+	     ply:SetAmmo( 100, "Pistol", true )
+	     ply:SetAmmo( 12, "357", true )
+	     ply:SetAmmo( 200, "SMG1", true )
+	     ply:SetAmmo( 3,"Grenade")*/
 
 		-- We now have classes.
 		local class = classdata[ply:GetNWInt("class",1)] -- Put the classdata into this local var for easy access
 		ply:SetMaxHealth(class.health)
-    ply:SetHealth(ply:GetMaxHealth())
-    ply:SetRunSpeed(class.speed)
-    ply:SetWalkSpeed( ply:GetRunSpeed() )
+	     ply:SetHealth(ply:GetMaxHealth())
+	     ply:SetRunSpeed(class.speed)
+	     ply:SetWalkSpeed( ply:GetRunSpeed() )
 		if class==7 then ent:SetModelScale( ent:GetModelScale() * 10, 1 ) end
 
 		-- give them weapons
@@ -289,7 +286,7 @@ function GM:PlayerSpawn(ply) ---------------------------------------------------
 			ply:SetAmmo(ammo.amount,ammo.type)
 		end
 
-		if ply:IsBot() then
+		if ply:IsBot() then // If bot, then equip a random weapon instead of just default
 			ply:SetActiveWeapon(table.Random(ply:GetWeapons()))
 			--ply:Give("weapon_agent_backstab",true)
 			--ply:SelectWeapon("weapon_agent_backstab")
@@ -304,63 +301,60 @@ function GM:PlayerSpawn(ply) ---------------------------------------------------
 			timer.Simple(3,function() if ply:Alive() then ply:PrintMessage(HUD_PRINTCENTER,"[Spawn] You are no longer invincible!") end end)
 		end
 
-    ply:SetupHands()
-  else
-    -- spawn mr.playa as a spectatorerino cappichino spaghettioli ravioli
+	     ply:SetupHands()
+	else
+	     -- spawn mr.playa as a spectatorerino cappichino spaghettioli ravioli
 		GAMEMODE:PlayerSpawnAsSpectator( ply )
 		ply:SetTeam(5)
-  end
+  	end
 end
 
 
-function GM:PlayerDeathThink( ply ) return false end
+function GM:PlayerDeathThink( ply ) return false end // Disable respawning manually
 
 util.AddNetworkString("youwerekilled")
 util.AddNetworkString("elimination")
 util.AddNetworkString("killfeed")
 function GM:PlayerDeath(ply,inflictor,attacker)
 
-		-- send to keelfeede
-			net.Start("killfeed")
-				net.WriteEntity(ply)
-				if attacker:IsPlayer() && attacker!=ply then net.WriteString(attacker:GetActiveWeapon():GetClass()) else net.WriteString("killed") end
-				net.WriteEntity(attacker)
-			net.Broadcast()
+	-- send to keelfeede
+	net.Start("killfeed")
+		net.WriteEntity(ply)
+		if attacker:IsPlayer() && attacker!=ply then net.WriteString(attacker:GetActiveWeapon():GetClass()) else net.WriteString("killed") end
+		net.WriteEntity(attacker)
+	net.Broadcast()
 
-    if humlilate == true then
-      return false
-    end
+     if humlilate == true then
+          return false
+     end
 
-		--print(attacker)
-		ply:SetNWBool("invis",false) -- we dont want an invis after death exploit!
+	--print(attacker)
+	ply:SetNWBool("invis",false) -- we dont want an invis after death exploit!
+	ply:AutoBalance()
 
-		ply:AutoBalance()
+     -- points
+     local gm = GetConVar("wb_gamemode"):GetInt()
+     if gm == 0 && attacker:IsPlayer() && attacker != ply then -- 2way dm!
+          team.AddScore(attacker:Team(),1)
+     elseif gm == 1 && attacker:IsPlayer() && attacker != ply then -- 2way dm!
+          team.AddScore(attacker:Team(),1)
+     end
 
-    -- points
-    local gm = GetConVar("wb_gamemode"):GetInt()
-    if gm == 0 && attacker:IsPlayer() && attacker != ply then -- 2way dm!
-      team.AddScore(attacker:Team(),1)
-    elseif gm == 1 && attacker:IsPlayer() && attacker != ply then -- 2way dm!
-      team.AddScore(attacker:Team(),1)
-    end
+	-- End ply's streak !
+	if ply:GetNWInt("killstreak",0) >= 5 then
+		local streak = ply:GetNWInt("killstreak",0)
+		ply:SendLua([[surface.PlaySound("ks/fail.mp3")]])
 
-		-- End ply's streak !
-		if ply:GetNWInt("killstreak",0) >= 5 then
-			local streak = ply:GetNWInt("killstreak",0)
-			ply:SendLua([[surface.PlaySound("ks/fail.mp3")]])
-
-			if ply != attacker && attacker:IsPlayer() then
-				PrintMessage(HUD_PRINTCENTER,">"..streak.."> "..attacker:Nick().." ended "..ply:Nick().."-s streak! >"..streak..">")
-				PrintMessage(HUD_PRINTTALK,">"..streak.."> "..attacker:Nick().." ended "..ply:Nick().."-s streak! >"..streak..">")
-
-			else
-				PrintMessage(HUD_PRINTCENTER,">"..streak.."> "..ply:Nick().." ended their own streak! >"..streak..">")
-				PrintMessage(HUD_PRINTTALK,">"..streak.."> "..ply:Nick().." ended their own streak! >"..streak..">")
-
-			end
+		if ply != attacker && attacker:IsPlayer() then
+			PrintMessage(HUD_PRINTCENTER,">"..streak.."> "..attacker:Nick().." ended "..ply:Nick().."-s streak! >"..streak..">")
+			PrintMessage(HUD_PRINTTALK,">"..streak.."> "..attacker:Nick().." ended "..ply:Nick().."-s streak! >"..streak..">")
+		else
+			PrintMessage(HUD_PRINTCENTER,">"..streak.."> "..ply:Nick().." ended their own streak! >"..streak..">")
+			PrintMessage(HUD_PRINTTALK,">"..streak.."> "..ply:Nick().." ended their own streak! >"..streak..">")
 		end
+	end
 
-    if attacker:IsPlayer() && attacker != ply then
+     if attacker:IsPlayer() && attacker != ply then
 			attacker:SetNWInt("points", attacker:GetNWInt("points")+2 )
 			attacker:SetNWInt("killstreak", attacker:GetNWInt("killstreak")+1 )
 			net.Start("elimination") net.WriteString("Eliminated "..ply:Nick().." +2") net.Send(attacker)
@@ -406,33 +400,33 @@ function GM:PlayerDeath(ply,inflictor,attacker)
 			end
 		end
 
-    if attacker:IsPlayer() && attacker!=ply && !humiliate then
-      net.Start("youwerekilled")
-      net.WriteEntity(attacker)
-      net.Send(ply)
+     if attacker:IsPlayer() && attacker!=ply && !humiliate then
+          net.Start("youwerekilled")
+          net.WriteEntity(attacker)
+          net.Send(ply)
 
-      ply:Spectate( OBS_MODE_FREEZECAM )
-      ply:SpectateEntity( attacker )
-      ply:StripWeapons()
+          ply:Spectate( OBS_MODE_FREEZECAM )
+          ply:SpectateEntity( attacker )
+          ply:StripWeapons()
 
-      timer.Simple( 3, function()
+          timer.Simple( 3, function()
 			if ply:Alive() || humiliate then return end -- why respawn if we are alive? also, no respawning during humiliation
-		      ply:SpectateEntity( table.Random( team.GetPlayers(ply:Team()) ) )
+		          ply:SpectateEntity( table.Random( team.GetPlayers(ply:Team()) ) )
 			 ply:SetObserverMode(OBS_MODE_ROAMING)
-		      timer.Simple( GetGlobalInt("respawntime",5), function() if ply:Alive() || humiliate then return end ply:Spawn() end )
-      end )
-    elseif ply:IsValid() && !humiliate then
-      ply:Spectate( OBS_MODE_DEATHCAM )
-      ply:SpectateEntity( attacker )
-      ply:StripWeapons()
+		          timer.Simple( GetGlobalInt("respawntime",5), function() if ply:Alive() || humiliate then return end ply:Spawn() end )
+          end )
+     elseif ply:IsValid() && !humiliate then
+          ply:Spectate( OBS_MODE_DEATHCAM )
+          ply:SpectateEntity( attacker )
+          ply:StripWeapons()
 
-      timer.Simple( 3, function()
+          timer.Simple( 3, function()
 			if ply:Alive() || humiliate then return end -- why respawn if we are alive? also, no respawning during humiliation
 			ply:SpectateEntity( table.Random( team.GetPlayers(ply:Team()) ) )
 			ply:SetObserverMode(OBS_MODE_ROAMING)
 			timer.Simple( GetGlobalInt("respawntime",5), function() if ply:Alive() || humiliate then return end ply:Spawn() end )
-      end )
-    end
+          end )
+     end
 end
 
 
@@ -470,29 +464,29 @@ end
 
 // round sytem
 function endRound()
-  game = false
-  setup = true
-  time=0
-  humiliate = true
+	game = false
+	setup = true
+	time=0
+	humiliate = true
 end
 
 function initRound()
 	time = setuptime -- setup time
-  setup = true
-  game = true
-  humiliate = false
+     setup = true
+     game = true
+     humiliate = false
 	victor = -1
 
-  team.SetScore(1,0)
-  team.SetScore(2,0)
-  team.SetScore(3,0)
-  team.SetScore(4,0)
+     team.SetScore(1,0)
+     team.SetScore(2,0)
+     team.SetScore(3,0)
+     team.SetScore(4,0)
 
 	RunConsoleCommand("gmod_admin_cleanup")
 
-  for i,ply in pairs(ents.FindByClass("player")) do
-    if ply:Team()!=5 then ply:Spawn() ply:Freeze(true) end
-  end
+     for i,ply in pairs(ents.FindByClass("player")) do
+     	if ply:Team()!=5 then ply:Spawn() ply:Freeze(true) end
+     end
 end
 
 function roundSetTime(int)
@@ -500,101 +494,101 @@ function roundSetTime(int)
 end
 
 function startRound()
-    time =roundtime -- round length
-    setup = false
-    game = true
+     time =roundtime -- round length
+     setup = false
+     game = true
 
-    for i,ply in pairs(ents.FindByClass("player")) do
-      ply:Freeze(false)
+     for i,ply in pairs(ents.FindByClass("player")) do
+          ply:Freeze(false)
 			net.Start("music")
 				net.WriteString(GetConVar("wb_musicurl"):GetString())
 				net.WriteString(GetConVar("wb_musiccredit"):GetString())
 			net.Send(ply)
-    end
+     end
 end
 
 util.AddNetworkString("roundrefresh")
 function broadcastRound()
-  net.Start("roundrefresh")
-    net.WriteInt(time,32)
-    net.WriteBool(setup)
-		net.WriteBool(fourway)
-		net.WriteInt(GetConVar("wb_gamemode"):GetInt(),4)
+     net.Start("roundrefresh")
+        	net.WriteInt(time,32)
+        	net.WriteBool(setup)
+   		net.WriteBool(fourway)
+	   	net.WriteInt(GetConVar("wb_gamemode"):GetInt(),4)
 		net.WriteInt(victor,4)
-  net.Broadcast()
+	net.Broadcast()
 end
 
 util.AddNetworkString("roundwinner")
 function roundSystem()
 	broadcastRound() -- keep clients up to date
-  if ( ( (team.NumPlayers(1)+team.NumPlayers(2)) < 2 && !fourway ) || ( (team.NumPlayers(1)+team.NumPlayers(2)+team.NumPlayers(3)+team.NumPlayers(4)) < 3 && fourway ) ) then
-    endRound()
-    time=0
-    humiliate = false
-    for i,ply in pairs(ents.FindByClass("player")) do
-      ply:Freeze(false)
-    end
-    return
-  end -- end round
+	if ( ( (team.NumPlayers(1)+team.NumPlayers(2)) < 2 && !fourway ) || ( (team.NumPlayers(1)+team.NumPlayers(2)+team.NumPlayers(3)+team.NumPlayers(4)) < 3 && fourway ) ) then
+     	endRound()
+     	time=0
+	     humiliate = false
+	     for i,ply in pairs(ents.FindByClass("player")) do
+	          ply:Freeze(false)
+	     end
+	     return
+ 	end -- end round
 
-  if (game) then
-    if (setup) then -- SETUP TOM?
-      time=time-1
+	if (game) then
+	     if (setup) then -- SETUP TOM?
+	     	time=time-1
+	          for i,ply in pairs(ents.FindByClass("player")) do
+	             if ply:Team()!=5 then ply:Freeze(true) end
+	          end
 
-      for i,ply in pairs(ents.FindByClass("player")) do
-        if ply:Team()!=5 then ply:Freeze(true) end
-      end
+	          if (time <= 0) then
+	             startRound()
+	          end
+	     else -- regulars
+			time=time-1
+	          if (time <= 0) then
+	          	local winner = 0
+	          if !fourway then --2way
+	               if (team.GetScore(1)>team.GetScore(2)) then winner = 1
+	          	elseif (team.GetScore(2)>team.GetScore(1)) then winner = 2 end
+	          else --4way
+	               if (team.GetScore(1)>team.GetScore(2)&&team.GetScore(1)>team.GetScore(3)&&team.GetScore(1)>team.GetScore(4)) then winner = 1
+		               elseif (team.GetScore(2)>team.GetScore(1)&&team.GetScore(2)>team.GetScore(3)&&team.GetScore(2)>team.GetScore(4)) then winner = 2
+		               elseif (team.GetScore(3)>team.GetScore(1)&&team.GetScore(3)>team.GetScore(2)&&team.GetScore(3)>team.GetScore(4)) then winner = 3
+		               elseif (team.GetScore(4)>team.GetScore(1)&&team.GetScore(4)>team.GetScore(2)&&team.GetScore(4)>team.GetScore(3)) then winner = 4
+	               end
+	          end
+			victor = winner
+			if winner == 0 then victor = 5 end
+	          if winner != 0 then PrintMessage( HUD_PRINTCENTER, teamdata[winner].name.." WINS!" )
+	          else PrintMessage( HUD_PRINTCENTER, "STALEMATE FUCK YOU ALL!" ) for i,ply in pairs( ents.FindByClass("player") ) do if ply:Team()!=5 then ply:SetHealth(25) ply:Ignite(999) end end end
+			broadcastRound()
+	          endRound()
+	          for i,ply in pairs( ents.FindByClass("player") ) do
+	          	if ply:Team()!=winner && ply:Team()!=5 then ply:StripWeapons() end
+	          end
+	          if victor != 5 then timer.Simple(30,initRound) else timer.Simple(10,initRound) end -- humilate time, 30 if players win, 10 if stalemate
+		end
+	end
 
-      if (time <= 0) then
-        startRound()
-      end
-    else -- regulars
-      time=time-1
-      if (time <= 0) then
-        local winner = 0
-        if !fourway then --2way
-          if (team.GetScore(1)>team.GetScore(2)) then winner = 1
-          elseif (team.GetScore(2)>team.GetScore(1)) then winner = 2 end
-        else --4way
-          if (team.GetScore(1)>team.GetScore(2)&&team.GetScore(1)>team.GetScore(3)&&team.GetScore(1)>team.GetScore(4)) then winner = 1
-          elseif (team.GetScore(2)>team.GetScore(1)&&team.GetScore(2)>team.GetScore(3)&&team.GetScore(2)>team.GetScore(4)) then winner = 2
-          elseif (team.GetScore(3)>team.GetScore(1)&&team.GetScore(3)>team.GetScore(2)&&team.GetScore(3)>team.GetScore(4)) then winner = 3
-          elseif (team.GetScore(4)>team.GetScore(1)&&team.GetScore(4)>team.GetScore(2)&&team.GetScore(4)>team.GetScore(3)) then winner = 4
-          end
-        end
-				victor = winner
-				if winner == 0 then victor = 5 end
-        if winner != 0 then PrintMessage( HUD_PRINTCENTER, teamdata[winner].name.." WINS!" )
-        else PrintMessage( HUD_PRINTCENTER, "STALEMATE FUCK YOU ALL!" ) for i,ply in pairs( ents.FindByClass("player") ) do if ply:Team()!=5 then ply:SetHealth(25) ply:Ignite(999) end end end
-				broadcastRound()
-        endRound()
-        for i,ply in pairs( ents.FindByClass("player") ) do
-          if ply:Team()!=winner && ply:Team()!=5 then ply:StripWeapons() end
-        end
-        if victor != 5 then timer.Simple(30,initRound) else timer.Simple(10,initRound) end -- humilate time, 30 if players win, 10 if stalemate
-      end
-    end
-  elseif (!humiliate) then
-    initRound()
-  end
+	elseif (!humiliate) then
+		initRound()
+	end
 
-  broadcastRound() -- zis is ze time, clients!
+  	broadcastRound() -- zis is ze time, clients!
 end
-timer.Create("roundsys",1,0,roundSystem)
+timer.Create("roundsys",1,0,roundSystem) // put that bloody massive timer into a function
 
 -- Make F1 open menu for clients
 function GM:ShowHelp(ply)
-    ply:ConCommand("chooseteam")
+     ply:ConCommand("chooseteam")
 end
 
 function GM:ShowTeam(ply)
-    ply:ConCommand("chooseclass")
+     ply:ConCommand("chooseclass")
 end
 
 -- Handle team requests
 util.AddNetworkString("requestteam")
 net.Receive( "requestteam", function( len, ply )
-  local request = net.ReadInt(4)
+	local request = net.ReadInt(4)
 
   // debug
   if GetConVar("wb_debug"):GetInt() == 1 then ply:SetTeam(request) ply:Kill() return true end
@@ -604,8 +598,8 @@ net.Receive( "requestteam", function( len, ply )
   if request == 5 then -- spectate
 		ply:SetTeam(5)
 		ply:KillSilent()
-    ply:Spawn()
-    return
+     ply:Spawn()
+     return
   end
 
 	if ply:CanJoin(request) then ply:SetTeam(request) PrintMessage(HUD_PRINTTALK,ply:Nick().." joined "..team.GetName(ply:Team())) ply:Kill() return end
