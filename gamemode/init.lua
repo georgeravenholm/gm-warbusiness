@@ -231,7 +231,7 @@ function GM:PlayerSpawn(ply) ---------------------------------------------------
 	ply:StripAmmo()
 	ply:SetNWEntity("carrying",Entity(0))
 	if (ply:Team() == 3 || ply:Team() == 4) && !fourway then ply:SetTeam(5) end -- if not fourway and they are on SVR or ABT put them in spectatorfags
-	if ply:Team()!=5 then // A L L O F  THIS IF NOT SPECTATING
+	if ply:Team()!=5 then // A L L O F THIS IF NOT SPECTATING
 		if ply:AutoBalance() then ply:KillSilent() end
 		ply:UnSpectate()
 
@@ -319,9 +319,28 @@ function GM:PlayerDeath(ply,inflictor,attacker)
 
 	-- send to keelfeede
 	net.Start("killfeed")
-		net.WriteEntity(ply)
-		if attacker:IsPlayer() && attacker!=ply then net.WriteString(attacker:GetActiveWeapon():GetClass()) else net.WriteString("killed") end
-		net.WriteEntity(attacker)
+		//net.WriteEntity(ply)
+		//if attacker:IsPlayer() && attacker!=ply then net.WriteString(attacker:GetActiveWeapon():GetClass()) else net.WriteString("killed") end
+		//net.WriteEntity(attacker)
+
+		// Instead of sending the entites which can be removed, send the text and team colours to the clients
+
+		//recycle code to get the adjective
+		if attacker:IsPlayer() && attacker!=ply then // if another player killed this player
+			net.WriteString(ply:Nick()) // Dead's name
+			net.WriteColor(team.GetColor(ply:Team())) // Dead's team colour
+
+			net.WriteString(attacker:GetActiveWeapon():GetClass()) // killers weapon
+
+			net.WriteString(attacker:Nick()) // killer's name
+			net.WriteColor(team.GetColor(attacker:Team())) // killer's team colour
+		else // suicide or world kill
+			net.WriteString("Themself") // Dead's name
+			net.WriteColor(team.GetColor(ply:Team())) // Dead's team colour
+			net.WriteString("killed") // sey person killed
+			net.WriteString(ply:Nick()) // killer's name
+			net.WriteColor(team.GetColor(ply:Team())) // killer's team colour
+		end
 	net.Broadcast()
 
      if humlilate == true then

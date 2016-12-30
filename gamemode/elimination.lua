@@ -1,4 +1,6 @@
 AddCSLuaFile()
+
+// Notifications
 net.Receive("elimination",function()
 	local text = net.ReadString()
 	local function inQuad( fraction, beginning, change )
@@ -23,7 +25,8 @@ net.Receive("elimination",function()
 
 end)
 
-local killfeed = {}
+// Killfeed
+local killfeed = killfeed or {}
 killfeed = vgui.Create("DPanel")
 killfeed:SetPos(ScrW()-700,0)
 killfeed:SetSize( 700,300 )
@@ -34,53 +37,28 @@ kflist:Dock(FILL)
 
 net.Receive("killfeed", function()
 	-- killfeede
-	local killed = net.ReadEntity()
-	local weapon = net.ReadString()
-	local attacker = net.ReadEntity()
-	--local suicide = net.ReadBool()
+	// Get string and colour data ito vars
+	local dead = net.ReadString()
+	local deadCol = net.ReadColor()
+	local adj = net.ReadString()
+	local killer = net.ReadString()
+	local killerCol = net.ReadColor()
 
 	local p = vgui.Create("DPanel",DListLayout)
 	p:SetSize(killfeed:GetWide(),25)
 
 	--suicide = false
 
-local weponverbs =
-{
-	["weapon_357"]="high noon'd",
-	["weapon_crowbar"]="struck down",
-	["weapon_pistol"]="shot",
-	["weapon_smg1"]="gunned down",
-	["weapon_ar2"]="shot down",
-	["weapon_frag"]="exploded",
-	["weapon_agent_backstab"]="backstabbed",
-	["weapon_crossbow"]="sniped",
-	["weapon_sharp_rifle"]="sniped",
-	["weapon_doc_heal"]="slapped",
-	["weapon_shotgun"]="buck'd up",
-	["weapon_teirtwo_shotgun"]="buck'd up",
-}
-
-	if killed!=attacker && attacker:IsPlayer() then
-		p.Paint = function(self,w,h)
-			local col = Color(150,150,150,255)
-			if attacker==LocalPlayer() || killed == LocalPlayer() then col = Color(255,255,255,255) end
-			draw.RoundedBox(8,0,0,w,h,col)
-			draw.SimpleText(attacker:Nick(),"ChatFont",10,h/2,team.GetColor(attacker:Team()),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			if weponverbs[weapon] == nil then draw.SimpleText(weapon,"ChatFont",w/2,h/2,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) else draw.SimpleText(weponverbs[weapon],"ChatFont",w/2,h/2,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) end
-			draw.SimpleText(killed:Nick(),"ChatFont",w-10,h/2,team.GetColor(killed:Team()),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
-		end
-	else
-		p.Paint = function(self,w,h)
-			local col = Color(150,150,150,255)
-			if attacker==LocalPlayer() || killed == LocalPlayer() then col = Color(255,255,255,255) end
-			draw.RoundedBox(8,0,0,w,h,col)
-			draw.RoundedBox(8,0,0,w,h,Color(200,200,200,255))
-			if !IsValid(killed) then return end
-			draw.SimpleText(killed:Nick(),"ChatFont",10,h/2,team.GetColor(killed:Team()),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
-			draw.SimpleText("killed","ChatFont",w/2,h/2,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER)
-			draw.SimpleText("Themself!","ChatFont",w-10,h/2,team.GetColor(killed:Team()),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
-		end
+	// Now put that info into the panel
+	p.Paint = function(self,w,h)
+		local col = Color(150,150,150,255)
+		if attacker==LocalPlayer() || killed == LocalPlayer() then col = Color(255,255,255,255) end
+		draw.RoundedBox(8,0,0,w,h,col)
+		draw.SimpleText(attacker:Nick(),"ChatFont",10,h/2,team.GetColor(attacker:Team()),TEXT_ALIGN_LEFT,TEXT_ALIGN_CENTER)
+		if weponverbs[weapon] == nil then draw.SimpleText(weapon,"ChatFont",w/2,h/2,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) else draw.SimpleText(weponverbs[weapon],"ChatFont",w/2,h/2,Color(0,0,0,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER) end
+		draw.SimpleText(killed:Nick(),"ChatFont",w-10,h/2,team.GetColor(killed:Team()),TEXT_ALIGN_RIGHT,TEXT_ALIGN_CENTER)
 	end
+
 
 	kflist:Add(p)
 	--timer.Simple(5,function() p:Remove() end	)

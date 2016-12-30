@@ -30,6 +30,22 @@ specialpeople =
 	"STEAM_0:1:38333670", -- dwanofwar
 }
 
+weponverbs = // These should be shared constants!
+{
+     ["weapon_357"]="high noon'd",
+     ["weapon_crowbar"]="struck down",
+     ["weapon_pistol"]="shot",
+     ["weapon_smg1"]="gunned down",
+     ["weapon_ar2"]="shot down",
+     ["weapon_frag"]="exploded",
+     ["weapon_agent_backstab"]="backstabbed",
+     ["weapon_crossbow"]="sniped",
+     ["weapon_sharp_rifle"]="sniped",
+     ["weapon_doc_heal"]="slapped",
+     ["weapon_shotgun"]="buck'd up",
+     ["weapon_teirtwo_shotgun"]="buck'd up",
+     ["weapon_heavyweapons_gattlinggun"]="gunly gattled"
+}
 
 teamdata={}
 teamdata[1]=
