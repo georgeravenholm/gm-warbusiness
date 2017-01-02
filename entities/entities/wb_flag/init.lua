@@ -120,6 +120,9 @@ end
 function ENT:Think()
 	local find = ents.FindInSphere(self:GetPos()+Vector(0,0,50),25) -- start a trace
 
+     // update timer
+     self:SetNWInt("returntime",timer.TimeLeft("resetflag"))
+
 	if self.carrier == nil && self.cantake then -- if we can take it
 		local find = ents.FindInSphere(self:GetPos()+Vector(0,0,50),25)
 		for i,ent in ipairs(find) do
