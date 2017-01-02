@@ -4,8 +4,12 @@ include('elimination.lua')
 include('classmenu.lua')
 include('hud.lua')
 include('scoreboard.lua')
+include('settings.lua')
 
 AddCSLuaFile()
+
+// Convars
+CreateClientConVar("wb_cl_disablemusic","0",true,true,"disable the music so ur youtube video dont get demonetised")
 
 /*function GM:PreDrawHalos()
     // Halos on... flags!
@@ -48,6 +52,7 @@ end)
 
 net.Receive("music", function()
   -- update that trash
+  if GetConVar("wb_cl_disablemusic"):GetBool() then return false end // music disaveled
   local url = net.ReadString()
   local credit = net.ReadString()
 	sound.PlayURL(url, "noblock", function(channel,errorID,errorString)
@@ -65,7 +70,7 @@ end)
 
 -- welcome box
 net.Receive("welcome", function()
-	Derma_Message( "Welcome to War Business!\nPress F1 to change team, and F2 to change classe.\n(if those dont work, try the fn key on your laptops or if that fails, 'chooseclass' and 'chooseteam' in console)\nThe gamemode is probably ctf.", "Welcome!", "I solemly swear that I read this and wont ask how to change classes." )
+	Derma_Message( "Welcome to War Business!\nPress F1 to change team, and F2 to change classe.\nPress F3 to open the options\n(if those dont work, try the fn key on your laptops or if that fails, 'chooseclass' and 'chooseteam' in console)\nThe gamemode is probably ctf.", "Welcome!", "I solemly swear that I read this and wont ask how to change classes." )
 end)
 
 -- ???

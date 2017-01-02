@@ -6,6 +6,7 @@ AddCSLuaFile("classmenu.lua")
 AddCSLuaFile("elimination.lua")
 AddCSLuaFile("scoreboard.lua")
 AddCSLuaFile("hud.lua")
+AddCSLuaFile("settings.lua")
 --AddCSLuaFile("elimination.lua")
 
 resource.AddFile( "sound/ks/5.wav" )
@@ -602,6 +603,10 @@ end
 
 function GM:ShowTeam(ply)
      ply:ConCommand("chooseclass")
+end
+
+function GM:ShowSpare1(ply)
+     ply:ConCommand("wb_options")
 end
 
 -- Handle team requests
