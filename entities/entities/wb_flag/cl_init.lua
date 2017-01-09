@@ -25,7 +25,7 @@ function ENT:Draw()
 		// timer 2d3d
 		local yaw = (LocalPlayer():GetPos()-self:GetPos()):Angle().y
 		local timeTill = self:GetNWInt("returntime")
-		if timeTill == 0 then return end // dont draw timer if not dropped
+		if timeTill <= 0 then return end // dont draw timer if not dropped
 		cam.Start3D2D( self:LocalToWorld(Vector(-5,0,70)),Angle(90,yaw,0)+Angle(270,90,90), 1 )
 
 			surface.SetDrawColor( self:GetColor() )

@@ -54,3 +54,4 @@
 		4 : "Abrika Industries"
 	]
 ]
+@SolidClass = wb_trig_flagreset : "This brush and trigger_hurt both reset the flag if it is dropped within it."

@@ -90,7 +90,7 @@ function metatable:dropFlag()
 	} )
 	self:SetPos(tr.HitPos)
 
-	timer.Create("resetflag",self.returntime,1, function() self:returnToBase() end ) -- reset flag after time
+	timer.Create("resetflag"..self:EntIndex(),self.returntime,1, function() self:returnToBase() end ) -- reset flag after time
 end
 
 function metatable:pickupFlag(ply)
@@ -109,7 +109,7 @@ function metatable:pickupFlag(ply)
 	PrintMessage( HUD_PRINTCENTER, self.carrier:Name().." ("..team.GetName(self.carrier:Team())..") has taken "..teamdata[self.team].name.."'s flag!" )
      self:Notify( self.carrier:Nick() , team.GetColor(self.carrier:Team()) , "picked up" , teamdata[self.team].name.."'s flag!" , team.GetColor(self.team) )
 	net.Start("elimination") net.WriteString("Take the flag back to your base!") net.Send(self.carrier)
-	timer.Stop("resetflag")
+	timer.Stop("resetflag"..self:EntIndex())
 end
 
 
@@ -121,7 +121,7 @@ function ENT:Think()
 	local find = ents.FindInSphere(self:GetPos()+Vector(0,0,50),25) -- start a trace
 
      // update timer
-     self:SetNWInt("returntime",timer.TimeLeft("resetflag"))
+     self:SetNWInt("returntime",timer.TimeLeft("resetflag"..self:EntIndex()))
 
 	if self.carrier == nil && self.cantake then -- if we can take it
 		local find = ents.FindInSphere(self:GetPos()+Vector(0,0,50),25)
@@ -163,7 +163,7 @@ function ENT:Think()
 				end
 		end
 		-- flag reset
-		if ent:GetClass()=="wb_trig_flagreset" then self:returnToBase() end
+		if ent:GetClass()=="wb_trig_flagreset" || ent:GetClass()=="trigger_hurt" then self:SetNWInt("returntime",0) timer.Destroy("resetflag"..self:EntIndex()) self:returnToBase() end
 	end
 
 
