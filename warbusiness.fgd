@@ -54,4 +54,16 @@
 		4 : "Abrika Industries"
 	]
 ]
-@SolidClass = wb_trig_flagreset : "This brush and trigger_hurt both reset the flag if it is dropped within it."
+
+@SolidClass = wb_trig_flagreset : "This brush and trigger_hurt both reset the flag if it is dropped within it." []
+// Resupply
+@PointClass base(Targetname, Origin, Angles) studioprop("models/props_interiors/VendingMachineSoda01a.mdl") = wb_resupply : "Vending machine that restores ammo and HP to 1 team"
+[
+	team(choices) : "Team" : 1 : "Team who can use" =
+	[
+		1 : "holmrekR tek"
+		2 : "Orangee Co"
+		3 : "Slaver Enterprises"
+		4 : "Abrika Industries"
+	]
+]
